@@ -75,14 +75,25 @@
                 url: url,
                 data: form.serialize(),
                 success: function(response) {
+                   // Re-enable button
+                   submitBtn.prop('disabled', false);
+
                    // Show success message
                    $('#status-message')
                       .removeClass('hidden bg-red-100 text-red-700')
                       .addClass('bg-green-100 text-green-700 p-3 rounded')
                       .text(response.message || 'Product added to cart successfully');
 
-                   // You can update cart count in navigation if needed
-                   // $('.cart-count').text(response.cart_count);
+                   // Update cart count in navigation
+                   if (response.cart_count > 0) {
+                      // If the cart count element doesn't exist, create it
+                      if ($('.absolute.top-0.right-0.inline-flex').length === 0) {
+                         $('.relative.p-1.mr-4.text-gray-700.hover\\:text-gray-900').append('<span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">' + response.cart_count + '</span>');
+                      } else {
+                         // Otherwise, update the existing element
+                         $('.absolute.top-0.right-0.inline-flex').text(response.cart_count);
+                      }
+                   }
 
                    // Auto-hide message after 3 seconds
                    setTimeout(function() {
@@ -90,6 +101,9 @@
                    }, 3000);
                 },
                 error: function(xhr) {
+                   // Re-enable button
+                   submitBtn.prop('disabled', false);
+
                    var errorMessage = 'An error occurred. Please try again.';
                    if (xhr.responseJSON && xhr.responseJSON.message) {
                       errorMessage = xhr.responseJSON.message;
@@ -97,4 +111,15 @@
 
                    $('#status-message')
                       .removeClass('hidden bg-green-100 text-green-700')
-                      .addClass('bg-red-100 text-red-700
+                      .addClass('bg-red-100 text-red-700 p-3 rounded')
+                      .text(errorMessage);
+
+                   // Auto-hide message after 3 seconds
+                   setTimeout(function() {
+                      $('#status-message').addClass('hidden');
+                   }, 3000);
+                }
+             });
+          });
+       });
+    </script>

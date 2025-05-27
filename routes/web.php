@@ -15,10 +15,10 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 // Cart routes
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::get('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+Route::get('/cart/add/{product}', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove/{product}', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
 
 // Add this line for the categories.show route (assuming you're using this route in your view)
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
